@@ -1,6 +1,6 @@
 # experiments-phaser-flappy
 
-A simple Flappy Bird clone with phaser.io 
+A simple Flappy Bird clone with Phaser 
 
 
 ## Installation
