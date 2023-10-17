@@ -14,7 +14,7 @@ class SimpleGame {
     start() {
         this.timerToken = setInterval(
             () => this.span.innerHTML = new Date().toUTCString(),
-            500
+            300
         );
     }
 

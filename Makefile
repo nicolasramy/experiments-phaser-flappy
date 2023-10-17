@@ -28,7 +28,7 @@ images:
 
 # open a bash CLI in the application container
 bash:
-	docker-compose run --rm app ash
+	docker-compose run --rm app bash
 
 # restart the application
 restart:
@@ -36,7 +36,7 @@ restart:
 
 dist: cleandist
 	# Build Application
-	docker-compose run --rm app bash -c "tsc app.ts"
+	docker-compose run --rm app bash -c "tsc src/*.ts --outDir public"
 
 cleandist:
 	# Remove artifacts
