@@ -22,14 +22,22 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     parent: 'game-container',
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
     max: {
-      width: 800,
-      height: 600
+      width: 1280,
+      height: 720
     }
   },
-  pixelArt: true
+  pixelArt: true,
+  physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 8 },
+            debug: false
+        }
+    }
+
 };
 
 window.addEventListener('load', () => {

@@ -1,6 +1,6 @@
 {
   "assetRoot": "assets",
-  "totalSize": 678201,
+  "totalSize": 574840,
   "assets": {
     "image": {
       "phaser_logo": {
@@ -44,9 +44,9 @@
     },
     "atlasXML": {
       "obstacles": {
-        "file": "obstacles/spritesheet_retina.png",
-        "size": 190109,
-        "schema": "obstacles/spritesheet_retina.xml"
+        "file": "obstacles/spritesheet_default.png",
+        "size": 86748,
+        "schema": "obstacles/spritesheet_default.xml"
       }
     }
   }

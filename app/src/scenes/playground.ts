@@ -2,11 +2,12 @@ import {Scene} from 'phaser';
 
 export default class PlaygroundScene extends Scene {
 
-    player;
-    // cursors: Phaser.input.CursorKeys;
+    player: Phaser.Physics.Arcade.Sprite;
+    // cursors: Phaser.Input.CursorKeys;
     cursors;
 
-    cursorOffset: number = 16;
+    cursorOffsetX: number = 75;
+    cursorOffsetY: number = 150;
 
     constructor() {
         super({
@@ -42,9 +43,12 @@ export default class PlaygroundScene extends Scene {
 
         const keys = ['fly', 'win', 'die'];
 
-        this.player = this.add.sprite(150, 300, 'player/bat');
+        const playgroundZone = this.add.zone(640, 360, 1280, 720);
+
+        this.player = this.physics.add.sprite(150, 300, 'player/bat');
         this.player.play('fly');
         this.player.setScale(2);
+        this.player.setCollideWorldBounds(true);
 
 
         const atlasTexture = this.textures.get('obstacles');
@@ -52,26 +56,29 @@ export default class PlaygroundScene extends Scene {
 
         console.log(frames);
 
-        this.add.image(600, 400, 'obstacles', frames[49]);
-        this.add.image(300, 400, 'obstacles', frames[57]);
+        let obstacle1 = this.add.image(600, 400, 'obstacles', frames[46]);
+        let obstacle2 = this.add.image(300, 400, 'obstacles', frames[57]);
+        let obstacle3 = this.add.image(300, 400, 'obstacles', frames[5]);
+        let obstacle4 = this.add.image(500, 400, 'obstacles', frames[30]);
+        this.add.image(800, 200, 'obstacles', frames[19]);
+        this.add.image(700, 500, 'obstacles', frames[21]);
+
+        Phaser.Display.Align.In.BottomCenter(obstacle1, playgroundZone);
 
     }
 
     update(): void {
         //  Vertical movement every 100ms
         if (this.input.keyboard.checkDown(this.cursors.up, 100)) {
-            this.player.y -= this.cursorOffset;
+            this.player.setVelocityY(-this.cursorOffsetY);
         } else if (this.input.keyboard.checkDown(this.cursors.down, 100)) {
-            this.player.y += this.cursorOffset;
+            this.player.setVelocityY(this.cursorOffsetY);
         }
 
-        if (this.input.keyboard.checkDown(this.cursors.left, 250))
-        {
-            this.player.play('die');
-        }
-        else if (this.input.keyboard.checkDown(this.cursors.right, 250))
-        {
-            this.player.play('win');
+        if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
+            this.player.setVelocityX(-this.cursorOffsetX);
+        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
+            this.player.setVelocityX(this.cursorOffsetX);
         }
     }
 }
