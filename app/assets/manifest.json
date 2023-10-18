@@ -1,6 +1,6 @@
 {
   "assetRoot": "assets",
-  "totalSize": 381360,
+  "totalSize": 678201,
   "assets": {
     "image": {
       "phaser_logo": {
@@ -10,6 +10,26 @@
       "background/empty": {
         "file": "background/backgroundEmpty.png",
         "size": 9444
+      },
+      "background/castles": {
+        "file": "background/backgroundCastles.png",
+        "size": 14738
+      },
+      "background/grass": {
+        "file": "background/backgroundColorGrass.png",
+        "size": 22809
+      },
+      "background/forest": {
+        "file": "background/backgroundColorForest.png",
+        "size": 21963
+      },
+      "background/fall": {
+        "file": "background/backgroundColorFall.png",
+        "size": 20649
+      },
+      "background/desert": {
+        "file": "background/backgroundColorDesert.png",
+        "size": 18073
       }
     },
     "spritesheet": {
@@ -20,6 +40,13 @@
           "frameWidth": 32,
           "frameHeight": 32
         }
+      }
+    },
+    "atlasXML": {
+      "obstacles": {
+        "file": "obstacles/spritesheet_retina.png",
+        "size": 190109,
+        "schema": "obstacles/spritesheet_retina.xml"
       }
     }
   }

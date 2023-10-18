@@ -28,7 +28,8 @@ const config: Phaser.Types.Core.GameConfig = {
       width: 800,
       height: 600
     }
-  }
+  },
+  pixelArt: true
 };
 
 window.addEventListener('load', () => {

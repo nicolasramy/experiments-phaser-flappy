@@ -32,7 +32,10 @@ export default class PreloadScene extends Scene {
         const assetVars = assetList[fileType][key];
         const url = manifest.assetRoot + '/' + fileType + '/' + assetVars['file'];
 
-        if (fileType === 'spritesheet') {
+        if (fileType === 'atlas' || fileType === 'atlasXML') {
+          const schemaUrl = manifest.assetRoot + '/' + fileType + '/' + assetVars.schema;
+          this.load[fileType](key, url, schemaUrl);
+        } else if (fileType === 'spritesheet') {
           this.load[fileType](key, url, assetVars.frameConfig);
         } else {
           this.load[fileType](key, url);
