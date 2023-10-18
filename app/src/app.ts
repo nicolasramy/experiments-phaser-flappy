@@ -1,30 +1,51 @@
-class SimpleGame {
-    element: HTMLElement;
-    span: HTMLElement;
-    timerToken: number;
+import Phaser from 'phaser';
 
-    constructor(element: HTMLElement) {
-        this.element = element;
-        this.element.innerHTML += "The time is";
-        this.span = document.createElement("span");
-        this.element.appendChild(this.span)
-        this.span.innerText = new Date().toUTCString();
+class BackgroundScene extends Phaser.Scene {
+
+    constructor() {
+         super({ key: 'test', active: false });
     }
 
-    start() {
-        this.timerToken = setInterval(
-            () => this.span.innerHTML = new Date().toUTCString(),
-            300
-        );
+    init(data) {}
+    preload() {}
+
+    create(data) {
+        this.add.image(data.x, data.y, "player");
     }
 
-    stop() {
-        clearTimeout(this.timerToken)
-    }
+    update() {}
 }
 
+class PlaygroundScene extends Phaser.Scene {
+
+    constructor() {
+         super({ key: 'test', active: false });
+    }
+
+    init(data) {
+        this.gif = data.image;
+    }
+    preload() {
+        console.log(this.png);
+        this.load.image('player', 'assets/player/bat.32x32.gif');
+    }
+
+    create(data) {
+        this.add.image(data.x, data.y, "player");
+    }
+
+    update() {}
+}
+
+const config = {
+    type: Phaser.AUTO,
+    parent: 'content',
+    width: 800,
+    height: 600,
+    scene: PlaygroundScene
+};
+
 window.onload = () => {
-    let element = document.getElementById("content");
-    let simpleGame = new SimpleGame(element);
-    simpleGame.start();
+    let simpleGame = new Phaser.Game(config);
+    simpleGame.scene.start("test", { image: 'A bat appears', x: 400, y: 300 });
 }

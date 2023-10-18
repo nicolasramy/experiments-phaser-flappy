@@ -40,7 +40,7 @@ dist: cleandist
 
 cleandist:
 	# Remove artifacts
-	find app/ -path "app/node_modules" -prune -o -name *.js -exec rm {} \;
+	find app/ -path "app/node_modules" -prune -o -name *.js -exec rm -f {} \;
 
 clean: cleandist
 	# Remove node_modules
