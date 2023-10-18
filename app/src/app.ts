@@ -1,51 +1,36 @@
-import Phaser from 'phaser';
+import 'phaser';
+import BackgroundScene from './scenes/background';
+import BootScene from './scenes/boot';
+import GameScene from './scenes/game';
+import PlaygroundScene from './scenes/playground';
+import PreloadScene from './scenes/preload';
+import ScoreScene from './scenes/score';
 
-class BackgroundScene extends Phaser.Scene {
+const config: Phaser.Types.Core.GameConfig = {
+  title: 'Demo Game',
 
-    constructor() {
-         super({ key: 'test', active: false });
-    }
-
-    init(data) {}
-    preload() {}
-
-    create(data) {
-        this.add.image(data.x, data.y, "player");
-    }
-
-    update() {}
-}
-
-class PlaygroundScene extends Phaser.Scene {
-
-    constructor() {
-         super({ key: 'test', active: false });
-    }
-
-    init(data) {
-        this.gif = data.image;
-    }
-    preload() {
-        console.log(this.png);
-        this.load.image('player', 'assets/player/bat.32x32.gif');
-    }
-
-    create(data) {
-        this.add.image(data.x, data.y, "player");
-    }
-
-    update() {}
-}
-
-const config = {
-    type: Phaser.AUTO,
-    parent: 'content',
+  scene: [
+    BootScene,
+    PreloadScene,
+    GameScene,
+    BackgroundScene,
+    PlaygroundScene,
+    ScoreScene
+  ],
+  backgroundColor: '#333',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: 'game-container',
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 800,
     height: 600,
-    scene: PlaygroundScene
+    max: {
+      width: 800,
+      height: 600
+    }
+  }
 };
 
-window.onload = () => {
-    let simpleGame = new Phaser.Game(config);
-    simpleGame.scene.start("test", { image: 'A bat appears', x: 400, y: 300 });
-}
+window.addEventListener('load', () => {
+  window['game'] = new Phaser.Game(config);
+});

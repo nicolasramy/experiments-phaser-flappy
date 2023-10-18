@@ -1,0 +1,26 @@
+{
+  "assetRoot": "assets",
+  "totalSize": 381360,
+  "assets": {
+    "image": {
+      "phaser_logo": {
+        "file": "phaser_logo.png",
+        "size": 377788
+      },
+      "background/empty": {
+        "file": "background/backgroundEmpty.png",
+        "size": 9444
+      }
+    },
+    "spritesheet": {
+      "player/bat": {
+        "file": "player/32x32-bat-sprite.png",
+        "size": 2628,
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      }
+    }
+  }
+}

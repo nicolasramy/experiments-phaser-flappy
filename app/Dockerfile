@@ -10,8 +10,6 @@ WORKDIR /app
 
 VOLUME ["/app"]
 
-RUN npm install -g typescript
-RUN npm install --global http-server
-RUN npm install phaser@3.60.0
+RUN npm install
 
-CMD ["http-server", "-a", "0.0.0.0", "-p", "5000", "-o", "/public", "--no-dotfiles"]
+CMD ["npm", "start"]

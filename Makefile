@@ -36,11 +36,12 @@ restart:
 
 dist: cleandist
 	# Build Application
-	docker-compose run --rm app bash -c "tsc src/*.ts --outDir public"
+	docker-compose run --rm app bash -c "tsc --project tsconfig.json --outDir public"
+	#cp app/node_modules/phaser/dist/phaser.min.js app/public/phaser.js
 
 cleandist:
 	# Remove artifacts
-	find app/ -path "app/node_modules" -prune -o -name *.js -exec rm -f {} \;
+	find app/public -name *.js -exec rm -f {} \;
 
 clean: cleandist
 	# Remove node_modules

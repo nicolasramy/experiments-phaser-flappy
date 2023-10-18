@@ -130,5 +130,6 @@ dist
 .pnp.*
 
 # Customs
-app.js
 .idea/
+app/public/*.js
+app/package-lock.json
