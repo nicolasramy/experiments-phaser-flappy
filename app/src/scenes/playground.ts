@@ -45,7 +45,7 @@ export default class PlaygroundScene extends Scene {
 
         const playgroundZone = this.add.zone(640, 360, 1280, 720);
 
-        this.player = this.physics.add.sprite(150, 300, 'player/bat');
+        this.player = this.physics.add.sprite(320, 360, 'player/bat');
         this.player.play('fly');
         this.player.setScale(2);
         this.player.setCollideWorldBounds(true);
@@ -56,14 +56,21 @@ export default class PlaygroundScene extends Scene {
 
         console.log(frames);
 
-        let obstacle1 = this.add.image(600, 400, 'obstacles', frames[46]);
-        let obstacle2 = this.add.image(300, 400, 'obstacles', frames[57]);
-        let obstacle3 = this.add.image(300, 400, 'obstacles', frames[5]);
-        let obstacle4 = this.add.image(500, 400, 'obstacles', frames[30]);
-        this.add.image(800, 200, 'obstacles', frames[19]);
-        this.add.image(700, 500, 'obstacles', frames[21]);
+        const obstacles = [];
+        const obstaclesSprites = [
+            46, 57, 5, 30,
+            46, 57, 5, 30,
+            46, 19, 5, 21,
+            46, 57, 5, 30,
+            46, 57, 5
+        ];
 
-        Phaser.Display.Align.In.BottomCenter(obstacle1, playgroundZone);
+        for (let i = 1; i < 15; i++) {
+            obstacles.push(this.add.sprite(150, 600, `obstacles`, frames[obstaclesSprites[i]]));
+        }
+
+
+        Phaser.Actions.AlignTo(obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
 
     }
 
@@ -75,10 +82,10 @@ export default class PlaygroundScene extends Scene {
             this.player.setVelocityY(this.cursorOffsetY);
         }
 
-        if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
-            this.player.setVelocityX(-this.cursorOffsetX);
-        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
-            this.player.setVelocityX(this.cursorOffsetX);
-        }
+        // if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
+        //     this.player.setVelocityX(-this.cursorOffsetX);
+        // } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
+        //     this.player.setVelocityX(this.cursorOffsetX);
+        // }
     }
 }
