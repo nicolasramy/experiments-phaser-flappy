@@ -30,6 +30,10 @@
       "background/desert": {
         "file": "background/backgroundColorDesert.png",
         "size": 18073
+      },
+      "items/cherries": {
+        "file": "items/cherries.png",
+        "size": 18073
       }
     },
     "spritesheet": {

@@ -6,8 +6,11 @@ export default class PlaygroundScene extends Scene {
     // cursors: Phaser.Input.CursorKeys;
     cursors;
 
-    cursorOffsetX: number = 75;
-    cursorOffsetY: number = 150;
+    cursorOffsetY: number = 16;
+    obstacleFrame: number = 1;
+
+    obstacles: Array<Phaser.GameObjects.Sprite> = [];
+    obstaclesFrames;
 
     constructor() {
         super({
@@ -52,35 +55,41 @@ export default class PlaygroundScene extends Scene {
 
 
         const atlasTexture = this.textures.get('obstacles');
-        const frames = atlasTexture.getFrameNames();
+        this.obstaclesFrames = atlasTexture.getFrameNames();
 
-        console.log(frames);
+        // console.log(frames);
 
-        const obstacles = [];
         const obstaclesSprites = [
             46, 57, 5, 30,
             46, 57, 5, 30,
             46, 19, 5, 21,
-            46, 57, 5, 30,
-            46, 57, 5
+            24, 25, 26, 27,
         ];
 
-        for (let i = 1; i < 15; i++) {
-            obstacles.push(this.add.sprite(150, 600, `obstacles`, frames[obstaclesSprites[i]]));
+        for (let i = 1; i <= 15; i++) {
+            this.obstacles.push(this.add.sprite(1024, 600, `obstacles`, this.obstaclesFrames[obstaclesSprites[i]]));
         }
 
+        Phaser.Actions.AlignTo(this.obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
 
-        Phaser.Actions.AlignTo(obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
+        this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64);
+        this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64).blendMode = 'ADD';
 
     }
 
-    update(): void {
+    update(time, delta): void {
         //  Vertical movement every 100ms
         if (this.input.keyboard.checkDown(this.cursors.up, 100)) {
-            this.player.setVelocityY(-this.cursorOffsetY);
+            this.player.setVelocityY(-this.cursorOffsetY * delta);
         } else if (this.input.keyboard.checkDown(this.cursors.down, 100)) {
-            this.player.setVelocityY(this.cursorOffsetY);
+            this.player.setVelocityY(this.cursorOffsetY * delta);
+        } else if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
+            this.obstacleFrame = this.obstacleFrame + 1;
+            this.obstacles.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
+            Phaser.Actions.AlignTo(this.obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
         }
+
+        this.obstacles.map((x) => x.x -= Math.trunc(0.3 * delta));
 
         // if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
         //     this.player.setVelocityX(-this.cursorOffsetX);
