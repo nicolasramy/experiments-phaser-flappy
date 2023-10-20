@@ -6,7 +6,7 @@ export default class PlaygroundScene extends Scene {
     // cursors: Phaser.Input.CursorKeys;
     cursors;
 
-    cursorOffsetY: number = 16;
+    cursorOffsetY: number = 8;
     obstacleFrame: number = 1;
 
     obstaclesTop: Array<Phaser.GameObjects.Sprite> = [];
@@ -75,7 +75,9 @@ export default class PlaygroundScene extends Scene {
         ];
 
         for (let i = 1; i <= 15; i++) {
-            this.obstaclesTop.push(this.add.sprite(1024, 200, `obstacles`, this.obstaclesFrames[obstaclesSpritesTop[i]]));
+            const spritTop = this.add.sprite(1024, 200, `obstacles`, this.obstaclesFrames[obstaclesSpritesTop[i]]);
+            spritTop.postFX.addShadow(0, 0, 0.03, 0.75, 0x333333, 10, 0.8);
+            this.obstaclesTop.push(spritTop);
             this.obstaclesBottom.push(this.add.sprite(1024, 600, `obstacles`, this.obstaclesFrames[obstaclesSpritesBottom[i]]));
         }
 
@@ -84,9 +86,13 @@ export default class PlaygroundScene extends Scene {
 
         const cherry = this.add.sprite(200, 500, 'items/cherries');
         cherry.setScale(1/64, 1/64);
-        cherry.postFX.addShine();
+        // cherry.preFX.setPadding(2);
+        cherry.postFX.addShine(1.5);
 
-        this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64).blendMode = 'ADD';
+        // this.player.postFX.addShadow();
+        this.player.postFX.addShadow(0, 0, 0.006, 2, 0x333333, 10);
+
+        // this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64).blendMode = 'ADD';
 
     }
 
@@ -106,8 +112,8 @@ export default class PlaygroundScene extends Scene {
             Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
         }
 
-        Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.3 * delta));
-        Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.3 * delta));
+        Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));
+        Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.2 * delta));
 
         // if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
         //     this.player.setVelocityX(-this.cursorOffsetX);
