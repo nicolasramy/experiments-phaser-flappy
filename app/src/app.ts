@@ -7,39 +7,40 @@ import PreloadScene from './scenes/preload';
 import ScoreScene from './scenes/score';
 
 const config: Phaser.Types.Core.GameConfig = {
-  title: 'Demo Game',
+    title: 'Experiments Phaser Flappy',
+    type: Phaser.AUTO,
+    backgroundColor: '#333',
+    pixelArt: true,
 
-  scene: [
-    BootScene,
-    PreloadScene,
-    GameScene,
-    BackgroundScene,
-    PlaygroundScene,
-    ScoreScene
-  ],
-  backgroundColor: '#333',
-  scale: {
-    mode: Phaser.Scale.FIT,
-    parent: 'game-container',
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 1280,
-    height: 720,
-    max: {
-      width: 1280,
-      height: 720
-    }
-  },
-  pixelArt: true,
-  physics: {
+    physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 8 },
+            gravity: {y: 8},
             debug: false
         }
-    }
+    },
 
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'game-container',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1280,
+        height: 720,
+        max: {
+            width: 1280,
+            height: 720
+        }
+    },
+    scene: [
+        BootScene,
+        PreloadScene,
+        GameScene,
+        BackgroundScene,
+        PlaygroundScene,
+        ScoreScene
+    ]
 };
 
 window.addEventListener('load', () => {
-  window['game'] = new Phaser.Game(config);
+    window['game'] = new Phaser.Game(config);
 });

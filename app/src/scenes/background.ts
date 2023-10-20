@@ -5,6 +5,10 @@ export default class Background extends Scene {
   backgroundKey: string;
 
   backgroundImages: Array<Phaser.GameObjects.Image> = [];
+
+  wrapper;
+
+
   constructor() {
     super({
       key: 'BackgroundScene'
@@ -26,15 +30,14 @@ export default class Background extends Scene {
   }
 
   update(time, delta): void {
-    // console.log(Math.trunc(0.1 * delta));
-    this.backgroundImages.map((x) => x.x -= Math.trunc(0.1 * delta));
+    Phaser.Actions.IncX(this.backgroundImages, -1);
+
+    if (this.backgroundImages[1].x == 768) {
+      this.backgroundImages.push(this.add.image(1792, 512, this.backgroundKey));
+    }
 
     if (this.backgroundImages[0].x <= -512) {
       this.backgroundImages.shift();
-    }
-
-    if (this.backgroundImages[1].x && this.backgroundImages[1].x == 768) {
-      this.backgroundImages.push(this.add.image(1792, 512, this.backgroundKey));
     }
   }
 }

@@ -9,7 +9,8 @@ export default class PlaygroundScene extends Scene {
     cursorOffsetY: number = 16;
     obstacleFrame: number = 1;
 
-    obstacles: Array<Phaser.GameObjects.Sprite> = [];
+    obstaclesTop: Array<Phaser.GameObjects.Sprite> = [];
+    obstaclesBottom: Array<Phaser.GameObjects.Sprite> = [];
     obstaclesFrames;
 
     constructor() {
@@ -46,7 +47,7 @@ export default class PlaygroundScene extends Scene {
 
         const keys = ['fly', 'win', 'die'];
 
-        const playgroundZone = this.add.zone(640, 360, 1280, 720);
+        // const playgroundZone = this.add.zone(640, 360, 1280, 720);
 
         this.player = this.physics.add.sprite(320, 360, 'player/bat');
         this.player.play('fly');
@@ -59,20 +60,32 @@ export default class PlaygroundScene extends Scene {
 
         // console.log(frames);
 
-        const obstaclesSprites = [
-            46, 57, 5, 30,
-            46, 57, 5, 30,
+        const obstaclesSpritesTop = [
+            46, 19, 5, 21,
+            24, 25, 26, 27,
             46, 19, 5, 21,
             24, 25, 26, 27,
         ];
 
+        const obstaclesSpritesBottom = [
+            46, 57, 5, 30,
+            46, 57, 5, 30,
+            46, 57, 5, 30,
+            46, 57, 5, 30,
+        ];
+
         for (let i = 1; i <= 15; i++) {
-            this.obstacles.push(this.add.sprite(1024, 600, `obstacles`, this.obstaclesFrames[obstaclesSprites[i]]));
+            this.obstaclesTop.push(this.add.sprite(1024, 200, `obstacles`, this.obstaclesFrames[obstaclesSpritesTop[i]]));
+            this.obstaclesBottom.push(this.add.sprite(1024, 600, `obstacles`, this.obstaclesFrames[obstaclesSpritesBottom[i]]));
         }
 
-        Phaser.Actions.AlignTo(this.obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
+        Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
+        Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
 
-        this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64);
+        const cherry = this.add.sprite(200, 500, 'items/cherries');
+        cherry.setScale(1/64, 1/64);
+        cherry.postFX.addShine();
+
         this.add.sprite(200, 500, 'items/cherries').setScale(1/64, 1/64).blendMode = 'ADD';
 
     }
@@ -85,11 +98,16 @@ export default class PlaygroundScene extends Scene {
             this.player.setVelocityY(this.cursorOffsetY * delta);
         } else if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
             this.obstacleFrame = this.obstacleFrame + 1;
-            this.obstacles.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
-            Phaser.Actions.AlignTo(this.obstacles, Phaser.Display.Align.RIGHT_BOTTOM);
+
+            this.obstaclesTop.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
+            Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
+
+            this.obstaclesBottom.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
+            Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
         }
 
-        this.obstacles.map((x) => x.x -= Math.trunc(0.3 * delta));
+        Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.3 * delta));
+        Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.3 * delta));
 
         // if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
         //     this.player.setVelocityX(-this.cursorOffsetX);
