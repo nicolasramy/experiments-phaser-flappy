@@ -1,6 +1,9 @@
 import { Scene } from 'phaser';
 
 export default class ScoreScene extends Scene {
+
+    score = 0;
+
   constructor() {
     super({
       key: 'ScoreScene'
@@ -12,10 +15,10 @@ export default class ScoreScene extends Scene {
   }
 
   create(): void {
-    const info = this.add.text(10, 10, 'Score: 0');
+    const info = this.add.text(10, 10, 'Score: 0').setColor('#000000');
 
         //  Grab a reference to the Game Scene
-        const ourGame = this.scene.get('GameScene');
+        const ourGame = this.scene.get('PlaygroundScene');
 
         //  Listen for events from it
         ourGame.events.on('addScore', function ()
@@ -26,5 +29,9 @@ export default class ScoreScene extends Scene {
             info.setText(`Score: ${this.score}`);
 
         }, this);
+  }
+
+  updae(): void {
+    //
   }
 }

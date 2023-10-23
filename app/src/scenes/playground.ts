@@ -6,6 +6,8 @@ export default class PlaygroundScene extends Scene {
     // cursors: Phaser.Input.CursorKeys;
     cursors;
 
+    counter: number = 0;
+    counterStep: number = 10;
     cursorOffsetX: number = 8;
     cursorOffsetY: number = 8;
     obstacleFrame: number = 1;
@@ -15,18 +17,30 @@ export default class PlaygroundScene extends Scene {
     obstaclesFrames;
 
     obstaclesSpritesTop = [
-        46, 19, 5, 21,
-        24, 25, 26, 27,
-        46, 19, 5, 21,
-        24, 25, 26, 27,
+        19, 20, 21, 22,
+        23, 24, 25, 26
     ];
 
-    obstaclesSpritesBottom = [
-        46, 57, 5, 30,
-        46, 57, 5, 30,
-        46, 57, 5, 30,
-        46, 57, 5, 30,
-    ];
+    obstaclesSpritesBushBottom = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    /**
+       1. Grass
+       2. Forest
+       3.
+     */
+
+    obstaclesSpritesGrassTrees = [46, 49, 55, 29, 30, 31, 32];
+    obstaclesSpritesGrassBushes = [0, 1, 2, 3];
+
+
+    obstaclesSpritesForrestBottom = [46, 49, 55, 47];
+    obstaclesSpritesFallBottom = [47, 51, 53, 57];
+    obstaclesSpritesDesertBottom = [54, 50, 56, 39, 40];
+    obstaclesSpritesIcedBottom = [48, 50, 56, 68];
+
+    obstaclesTopOffset: number = 30;
+
+    obstaclesSpritesBottom = this.obstaclesSpritesGrassBushes;
 
     keyQ;
     keyR;
@@ -130,6 +144,14 @@ export default class PlaygroundScene extends Scene {
         Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));
         Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.2 * delta));
 
+        // if ()
+        // Phaser.Actions.IncY(obstaclesTopOffset);
+
+        this.counter += 1;
+        if (this.counter % this.counterStep == 0) {
+            this.events.emit('addScore');
+        }
+
         if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
             this.player.setVelocityX(-this.cursorOffsetX / 2);
         } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
@@ -140,7 +162,7 @@ export default class PlaygroundScene extends Scene {
     spawnObstacles(): void {
         this.obstaclesTop = [];
         this.obstaclesBottom = [];
-        for (let i = 1; i <= 15; i++) {
+        for (let i = 0; i <= 8; i++) {
             const spriteTop = this.add.sprite(
                 1024,
                 200,
@@ -160,5 +182,11 @@ export default class PlaygroundScene extends Scene {
 
         Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
         Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
+    }
+
+    spanObstacle(): void {
+      const startY = Phaser.Math.Between(100, 300);
+      const spriteTopId = Phaser.Math.Between(0, 8);
+      const spriteBottomId = Phaser.Math.Between(0, 8);
     }
 }
