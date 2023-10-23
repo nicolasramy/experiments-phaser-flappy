@@ -6,12 +6,33 @@ export default class PlaygroundScene extends Scene {
     // cursors: Phaser.Input.CursorKeys;
     cursors;
 
+    cursorOffsetX: number = 8;
     cursorOffsetY: number = 8;
     obstacleFrame: number = 1;
 
     obstaclesTop: Array<Phaser.GameObjects.Sprite> = [];
     obstaclesBottom: Array<Phaser.GameObjects.Sprite> = [];
     obstaclesFrames;
+
+    obstaclesSpritesTop = [
+        46, 19, 5, 21,
+        24, 25, 26, 27,
+        46, 19, 5, 21,
+        24, 25, 26, 27,
+    ];
+
+    obstaclesSpritesBottom = [
+        46, 57, 5, 30,
+        46, 57, 5, 30,
+        46, 57, 5, 30,
+        46, 57, 5, 30,
+    ];
+
+    keyQ;
+    keyR;
+    keyS;
+    keyT;
+    keyD;
 
     constructor() {
         super({
@@ -21,6 +42,12 @@ export default class PlaygroundScene extends Scene {
 
     create(): void {
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         // this.add.image(0, 0, 'player/bat', '__BASE').setOrigin(0, 0);
 
@@ -59,35 +86,14 @@ export default class PlaygroundScene extends Scene {
         this.obstaclesFrames = atlasTexture.getFrameNames();
 
         // console.log(frames);
+        this.spawnObstacles();
 
-        const obstaclesSpritesTop = [
-            46, 19, 5, 21,
-            24, 25, 26, 27,
-            46, 19, 5, 21,
-            24, 25, 26, 27,
-        ];
-
-        const obstaclesSpritesBottom = [
-            46, 57, 5, 30,
-            46, 57, 5, 30,
-            46, 57, 5, 30,
-            46, 57, 5, 30,
-        ];
-
-        for (let i = 1; i <= 15; i++) {
-            const spritTop = this.add.sprite(1024, 200, `obstacles`, this.obstaclesFrames[obstaclesSpritesTop[i]]);
-            spritTop.postFX.addShadow(0, 0, 0.03, 0.75, 0x333333, 10, 0.8);
-            this.obstaclesTop.push(spritTop);
-            this.obstaclesBottom.push(this.add.sprite(1024, 600, `obstacles`, this.obstaclesFrames[obstaclesSpritesBottom[i]]));
-        }
-
-        Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
-        Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
 
         const cherry = this.add.sprite(200, 500, 'items/cherries');
-        cherry.setScale(1/64, 1/64);
+        // cherry.setScale(1/64, 1/64);
         // cherry.preFX.setPadding(2);
         cherry.postFX.addShine(1.5);
+        // cherry.postFX.addBloom();
 
         // this.player.postFX.addShadow();
         this.player.postFX.addShadow(0, 0, 0.006, 2, 0x333333, 10);
@@ -97,11 +103,20 @@ export default class PlaygroundScene extends Scene {
     }
 
     update(time, delta): void {
+
+        if (this.keyR.isDown) {
+            this.scene.restart();
+        }
+
         //  Vertical movement every 100ms
         if (this.input.keyboard.checkDown(this.cursors.up, 100)) {
             this.player.setVelocityY(-this.cursorOffsetY * delta);
         } else if (this.input.keyboard.checkDown(this.cursors.down, 100)) {
             this.player.setVelocityY(this.cursorOffsetY * delta);
+        } else if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
+            this.player.setVelocityX(-this.cursorOffsetY * delta);
+        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
+            this.player.setVelocityX(this.cursorOffsetY * delta);
         } else if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
             this.obstacleFrame = this.obstacleFrame + 1;
 
@@ -115,10 +130,35 @@ export default class PlaygroundScene extends Scene {
         Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));
         Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.2 * delta));
 
-        // if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
-        //     this.player.setVelocityX(-this.cursorOffsetX);
-        // } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
-        //     this.player.setVelocityX(this.cursorOffsetX);
-        // }
+        if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
+            this.player.setVelocityX(-this.cursorOffsetX / 2);
+        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
+            this.player.setVelocityX(this.cursorOffsetX / 2);
+        }
+    }
+
+    spawnObstacles(): void {
+        this.obstaclesTop = [];
+        this.obstaclesBottom = [];
+        for (let i = 1; i <= 15; i++) {
+            const spriteTop = this.add.sprite(
+                1024,
+                200,
+                `obstacles`,
+                this.obstaclesFrames[this.obstaclesSpritesTop[i]]
+            );
+            const spriteBottom = this.add.sprite(1024,
+                600,
+                `obstacles`,
+                this.obstaclesFrames[this.obstaclesSpritesBottom[i]]
+            );
+            spriteTop.postFX.addShadow(0, 0, 0.03, 0.75, 0x333333, 10, 0.8);
+
+            this.obstaclesTop.push(spriteTop);
+            this.obstaclesBottom.push(spriteBottom);
+        }
+
+        Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
+        Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
     }
 }
