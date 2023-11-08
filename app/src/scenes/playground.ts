@@ -1,7 +1,7 @@
 import { Scene } from 'phaser';
 // import { Apple, Banana, Cherry } from "../components/fruit";
-import { Banana } from "../components/fruit";
-import { Player } from "../components/player2";
+import { Apple, Banana, Cherry } from "../components/fruit";
+import { Player } from "../components/player";
 
 export default class PlaygroundScene extends Scene {
 
@@ -11,8 +11,6 @@ export default class PlaygroundScene extends Scene {
 
     counter: number = 0;
     counterStep: number = 10;
-    cursorOffsetX: number = 8;
-    cursorOffsetY: number = 8;
 
     keyQ;
     keyW;
@@ -23,6 +21,9 @@ export default class PlaygroundScene extends Scene {
     keyF;
 
     fruit;
+    fruits;
+
+    obstacles;
 
     constructor() {
         super({
@@ -31,8 +32,10 @@ export default class PlaygroundScene extends Scene {
     }
 
     create(): void {
+        // Attach keyboard
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        // Define extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -41,20 +44,16 @@ export default class PlaygroundScene extends Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
-
+        // Add player and props
         this.player = new Player(this, 320, 360)
-        this.player.fly();
-        this.player.setCollideWorldBounds(true);
-
-
-        this.fruit = new Banana(this, 600, 600, "items/bananas");
-        // this.add.s
+        this.fruit = new Cherry(this, 600, 600);
     }
 
     update(time, delta): void {
-
+        // Handle extra keys
         if (this.keyR.isDown) {
             this.scene.restart();
+            this.events.emit('resetScore');
         }
 
         if (this.keyW.isDown) {
@@ -69,16 +68,8 @@ export default class PlaygroundScene extends Scene {
             this.player.fly();
         }
 
-        //  Vertical movement every 100ms
-        if (this.input.keyboard.checkDown(this.cursors.up, 100)) {
-            this.player.setVelocityY(-this.cursorOffsetY * delta);
-        } else if (this.input.keyboard.checkDown(this.cursors.down, 100)) {
-            this.player.setVelocityY(this.cursorOffsetY * delta);
-        } else if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
-            this.player.setVelocityX(-this.cursorOffsetY * delta);
-        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
-            this.player.setVelocityX(this.cursorOffsetY * delta);
-        } else if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
+
+        if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
 
             /**
             this.obstacleFrame = this.obstacleFrame + 1;
@@ -97,28 +88,29 @@ export default class PlaygroundScene extends Scene {
         // if ()
         // Phaser.Actions.IncY(obstaclesTopOffset);
 
-        // this.counter += 1;
-        /*
+        this.counter += 1;
+        // /*
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
         }
-        */
+        // */
 
-        if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
-            this.player.setVelocityX(-this.cursorOffsetX / 2);
-        } else if (this.input.keyboard.checkDown(this.cursors.right, 100)) {
-            this.player.setVelocityX(this.cursorOffsetX / 2);
-        }
+        this.player.update(time, delta, this.input.keyboard, this.cursors);
+        this.fruit.update(time, delta);
+
+
+        this.events.emit('updateEnergy', this.player.energy);
 
         // console.log(this.fruit.yOffset);
         // console.log(this.fruit.isDeletable());
         // this.fruit.update(time, delta);
         // this.fruit.move();
+        /*
         if (this.fruit.x < 0) {
-            this.fruit = new Banana(this, 200, 25, "items/bananas");
+            this.fruit = new Banana(this, 200, 25);
         } else {
             this.fruit.move();
-        }
+        }*/
         // console.log(this.fruit.sprite.body.x);
     }
 }

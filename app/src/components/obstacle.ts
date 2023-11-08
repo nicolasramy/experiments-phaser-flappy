@@ -1,8 +1,15 @@
 import 'phaser';
-import {Scene} from 'phaser';
+import {Physics, Scene} from 'phaser';
 
 
-export class Obstacle {
+class Obstacle extends Physics.Arcade.Sprite {
+    constructor(scene: Scene, x: number, y: number, texture: string, frame?: string | number) {
+        super(scene, x, y, texture, frame);
+    }
+}
+
+
+class Fruit extends Physics.Arcade.Sprite {
 
 
     obstacleFrame: number = 1;
@@ -30,9 +37,8 @@ export class Obstacle {
 
     private sprite: Phaser.Physics.Arcade.Sprite;
 
-    constructor(scene: Scene) {
-        // const atlasTexture = this.textures.get('obstacles');
-        // this.obstaclesFrames = atlasTexture.getFrameNames();
+    constructor(scene: Scene, x: number, y: number, texture: string, frame?: string | number) {
+        super(scene, x, y, texture, frame);
 
     }
 

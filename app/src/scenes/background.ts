@@ -2,6 +2,8 @@ import { Scene } from 'phaser';
 
 export default class Background extends Scene {
 
+  readonly speed: number = 1;
+
   backgroundKey: string;
 
   backgroundImages: Array<Phaser.GameObjects.Image> = [];
@@ -30,8 +32,7 @@ export default class Background extends Scene {
   }
 
   update(time, delta): void {
-    // Phaser.Actions.IncX(this.backgroundImages, -1);
-    Phaser.Actions.IncX(this.backgroundImages, -1);
+    Phaser.Actions.IncX(this.backgroundImages, -this.speed);
 
     if (this.backgroundImages[1].x == 768) {
       this.backgroundImages.push(this.add.image(1792, 512, this.backgroundKey));
