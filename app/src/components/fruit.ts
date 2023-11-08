@@ -4,15 +4,18 @@ import { Sprite } from 'phaser/src/physics/arcade/components';
 
 export class Fruit extends Physics.Arcade.Sprite {
     energy: number;
-    xOffset: number = 800;
-    yOffset: number;
-    yOffsetMin: number = 0;
-    yOffsetMax: number = 720;
+    xStart: number = 1200;
+
+    yStartMin: number = 60;
+    yStartMax: number = 400;
 
     shineSpeed: number = 1.5;
 
     constructor (scene: Scene, x: number, y: number, texture: string, frame?: string | number) {
         super(scene, x, y, texture, frame);
+
+        this.x = this.xStart;
+        this.y = Between(this.yStartMin, this.yStartMax);
 
         this.postFX.addShine(this.shineSpeed);
 

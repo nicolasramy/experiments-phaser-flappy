@@ -25,6 +25,7 @@ export default class ScoreScene extends Scene {
     const ourGame = this.scene.get('PlaygroundScene');
 
     ourGame.events.on('resetScore', function (){
+        this.score = 0;
         score.setText('Score: 0');
     }, this);
 

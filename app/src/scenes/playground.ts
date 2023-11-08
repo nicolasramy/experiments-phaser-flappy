@@ -2,14 +2,24 @@ import { Scene } from 'phaser';
 // import { Apple, Banana, Cherry } from "../components/fruit";
 import { Apple, Banana, Cherry } from "../components/fruit";
 import { Player } from "../components/player";
-import { GrassLevel, Level } from "../components/level";
+import {DesertLevel, FallLevel, ForestLevel, GrassLevel, Level} from "../components/level";
 
 export default class PlaygroundScene extends Scene {
 
     player: Player;
+
     // cursors: PhaserPla.CursorKeys;
     cursors;
 
+    level;
+    levels = {
+        'grass': GrassLevel,
+        'forest': ForestLevel,
+        'fall': FallLevel,
+        'desert': DesertLevel
+    };
+
+    score: number = 0;
     counter: number = 0;
     counterStep: number = 10;
 
@@ -26,12 +36,18 @@ export default class PlaygroundScene extends Scene {
 
     obstacles;
 
-    level: Level;
-
     constructor() {
         super({
             key: 'PlaygroundScene'
         });
+    }
+    init (data){
+        this.counter = data.counter ? data.counter : 0;
+        // score = 0
+        // level = 1
+        // medals = 0
+        // energy = 100
+        // level = 'grass'
     }
 
     create(): void {
@@ -49,16 +65,23 @@ export default class PlaygroundScene extends Scene {
 
         // Add player and props
         this.player = new Player(this, 320, 360)
+
+        this.player.setDataEnabled();
+        this.player.data.set('level', 2);
+        this.player.data.set('gold', 150);
+        this.player.data.set('owner', 'Link');
+
         this.fruit = new Cherry(this, 600, 600);
 
-        this.level = new GrassLevel()
+
+
     }
 
     update(time, delta): void {
         // Handle extra keys
         if (this.keyR.isDown) {
-            this.scene.restart();
             this.events.emit('resetScore');
+            this.scene.restart();
         }
 
         if (this.keyW.isDown) {
@@ -98,7 +121,10 @@ export default class PlaygroundScene extends Scene {
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
         }
-        // */
+
+        if (this.counter  > 300) {
+            this.events.emit('changeLevel', 'forest');
+        }
 
         this.player.update(time, delta, this.input.keyboard, this.cursors);
         this.fruit.update(time, delta);
@@ -117,5 +143,11 @@ export default class PlaygroundScene extends Scene {
             this.fruit.move();
         }*/
         // console.log(this.fruit.sprite.body.x);
+        // console.log(this.level.bronzeDistance);
+
+
+        //this.level.play()
+
+
     }
 }
