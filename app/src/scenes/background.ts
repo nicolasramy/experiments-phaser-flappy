@@ -1,9 +1,8 @@
 import { Scene } from 'phaser';
 
 export default class BackgroundScene extends Scene {
-
   readonly speed: number = 1;
-  scroll: boolean = false;
+
   imageKey: string = 'background/empty';
 
   images: Array<Phaser.GameObjects.Image> = [];
@@ -13,11 +12,10 @@ export default class BackgroundScene extends Scene {
       key: 'BackgroundScene'
     });
   }
-    init (data){
-        this.imageKey = data.image ? data.image : this.imageKey;
-        this.scroll = data.scroll ? data.scroll : this.scroll;
-    }
 
+  init(data): void {
+    this.imageKey = data.imageKey;
+  }
 
   create(): void {
     this.images.push(this.add.image(512, 512, this.imageKey));
@@ -25,7 +23,8 @@ export default class BackgroundScene extends Scene {
   }
 
   update(time, delta): void {
-    if (this.scroll) {
+
+    if (this.images.length) {
       Phaser.Actions.IncX(this.images, -this.speed);
 
       if (this.images[1].x == 768) {
@@ -33,7 +32,8 @@ export default class BackgroundScene extends Scene {
       }
 
       if (this.images[0].x <= -512) {
-        this.images.shift();
+        let image = this.images.shift();
+        image.destroy(true);
       }
     }
   }

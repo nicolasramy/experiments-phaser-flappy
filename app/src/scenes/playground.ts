@@ -43,11 +43,11 @@ export default class PlaygroundScene extends Scene {
     }
     init (data){
         this.counter = data.counter ? data.counter : 0;
+        this.score = data.score ? data.score : 0;
+        this.level = data.level ? data.level : 1;
         // score = 0
-        // level = 1
         // medals = 0
         // energy = 100
-        // level = 'grass'
     }
 
     create(): void {
@@ -72,9 +72,6 @@ export default class PlaygroundScene extends Scene {
         this.player.data.set('owner', 'Link');
 
         this.fruit = new Cherry(this, 600, 600);
-
-
-
     }
 
     update(time, delta): void {
@@ -117,13 +114,14 @@ export default class PlaygroundScene extends Scene {
         // Phaser.Actions.IncY(obstaclesTopOffset);
 
         this.counter += 1;
-        // /*
+
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
         }
 
         if (this.counter  > 300) {
-            this.events.emit('changeLevel', 'forest');
+            this.events.emit('changeLevel',3, this.counter);
+            this.counter = 0;
         }
 
         this.player.update(time, delta, this.input.keyboard, this.cursors);
@@ -136,6 +134,7 @@ export default class PlaygroundScene extends Scene {
         // console.log(this.fruit.isDeletable());
         // this.fruit.update(time, delta);
         // this.fruit.move();
+
         /*
         if (this.fruit.x < 0) {
             this.fruit = new Banana(this, 200, 25);
@@ -143,6 +142,9 @@ export default class PlaygroundScene extends Scene {
             this.fruit.move();
         }*/
         // console.log(this.fruit.sprite.body.x);
+
+
+
         // console.log(this.level.bronzeDistance);
 
 

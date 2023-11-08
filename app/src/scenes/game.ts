@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import {ForestLevel, GrassLevel} from "../components/level";
+import {DesertLevel, FallLevel, ForestLevel, GrassLevel} from "../components/level";
 
 export default class GameScene extends Scene {
 
@@ -15,25 +15,28 @@ export default class GameScene extends Scene {
 
   create(): void {
 
-    this.scene.launch('BackgroundScene');
-    this.scene.launch('PlaygroundScene');
+    this.level = new GrassLevel();
+
+    this.scene.launch('BackgroundScene', {imageKey: this.level.imageKey});
+    this.scene.launch('PlaygroundScene', {level: 1, counter: 0, score: 0});
     this.scene.launch('ScoreScene');
 
-    const ourGame = this.scene.get('PlaygroundScene');
+    const playground = this.scene.get('PlaygroundScene');
 
-    ourGame.events.on('changeLevel', function (name){
-      console.log(name);
+    playground.events.on('changeLevel', function (level, counter) {
+      if (level == 2) {
+        this.level = new ForestLevel();
+      } else if (level == 3) {
+        this.level = new FallLevel();
+      } else if (level == 4) {
+        this.level = new DesertLevel();
+      } else {
+        this.level = new GrassLevel();
+      }
 
-      this.level = new ForestLevel();
-      this.level.play(this);
-
+      this.registry.set('imageKey', this.level.imageKey);
+      let backgroundScene = this.scene.start('BackgroundScene', {imageKey: this.level.imageKey});
     }, this);
-
-    this.start();
   }
 
-  start(): void {
-    this.level = new GrassLevel();
-    // level.play(this);
-  }
 }
