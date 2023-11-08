@@ -1,8 +1,30 @@
 import 'phaser';
 import {Scene} from "phaser";
 
-abstract class Level {
+import {Player} from "./player"
+import {Fruit} from "./fruit"
+
+export abstract class Level {
     hello: number;
+
+    player: Player;
+    fruit: Fruit;
+
+    scene: Scene;
+
+    play(scene: Scene): void {
+        // scene.launch('ForestBackground');
+        let backgroundBackgroundScene = scene.scene.start(
+            'BackgroundScene',
+            {
+                image: 'background/grass',
+                scroll: true
+            });
+    }
+    pause(): void {}
+    resume(): void {}
+    stop(): void {}
+
 }
 
 export class GrassLevel extends Level {
@@ -12,6 +34,16 @@ export class GrassLevel extends Level {
     private goldDistance: number = 5000;
     constructor() {
         super();
+    }
+
+    play(scene: Scene): void {
+        // scene.launch('ForestBackground');
+        let backgroundBackgroundScene = scene.scene.start(
+            'BackgroundScene',
+            {
+                image: 'background/grass',
+                scroll: true
+            });
     }
 }
 export class ForestLevel extends Level {

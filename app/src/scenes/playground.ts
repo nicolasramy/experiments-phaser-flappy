@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 // import { Apple, Banana, Cherry } from "../components/fruit";
 import { Apple, Banana, Cherry } from "../components/fruit";
 import { Player } from "../components/player";
+import { GrassLevel, Level } from "../components/level";
 
 export default class PlaygroundScene extends Scene {
 
@@ -25,6 +26,8 @@ export default class PlaygroundScene extends Scene {
 
     obstacles;
 
+    level: Level;
+
     constructor() {
         super({
             key: 'PlaygroundScene'
@@ -47,6 +50,8 @@ export default class PlaygroundScene extends Scene {
         // Add player and props
         this.player = new Player(this, 320, 360)
         this.fruit = new Cherry(this, 600, 600);
+
+        this.level = new GrassLevel()
     }
 
     update(time, delta): void {

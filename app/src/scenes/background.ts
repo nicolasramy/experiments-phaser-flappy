@@ -1,45 +1,40 @@
 import { Scene } from 'phaser';
 
-export default class Background extends Scene {
+export default class BackgroundScene extends Scene {
 
   readonly speed: number = 1;
+  scroll: boolean = false;
+  imageKey: string = 'background/empty';
 
-  backgroundKey: string;
-
-  backgroundImages: Array<Phaser.GameObjects.Image> = [];
-
-  wrapper;
-
+  images: Array<Phaser.GameObjects.Image> = [];
 
   constructor() {
     super({
       key: 'BackgroundScene'
     });
-
-    /**
-     * background/empty
-     * background/grass
-     * background/forest
-     * background/fall
-     * background/desert
-     */
-    this.backgroundKey = 'background/desert';
   }
+    init (data){
+        this.imageKey = data.image ? data.image : this.imageKey;
+        this.scroll = data.scroll ? data.scroll : this.scroll;
+    }
+
 
   create(): void {
-    this.backgroundImages.push(this.add.image(512, 512, this.backgroundKey));
-    this.backgroundImages.push(this.add.image(1536, 512, this.backgroundKey));
+    this.images.push(this.add.image(512, 512, this.imageKey));
+    this.images.push(this.add.image(1536, 512, this.imageKey));
   }
 
   update(time, delta): void {
-    Phaser.Actions.IncX(this.backgroundImages, -this.speed);
+    if (this.scroll) {
+      Phaser.Actions.IncX(this.images, -this.speed);
 
-    if (this.backgroundImages[1].x == 768) {
-      this.backgroundImages.push(this.add.image(1792, 512, this.backgroundKey));
-    }
+      if (this.images[1].x == 768) {
+        this.images.push(this.add.image(1792, 512, this.imageKey));
+      }
 
-    if (this.backgroundImages[0].x <= -512) {
-      this.backgroundImages.shift();
+      if (this.images[0].x <= -512) {
+        this.images.shift();
+      }
     }
   }
 }

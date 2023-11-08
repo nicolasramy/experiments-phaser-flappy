@@ -2,7 +2,7 @@ import { Scene, Physics } from 'phaser';
 import { Between } from 'phaser/src/math';
 import { Sprite } from 'phaser/src/physics/arcade/components';
 
-class Fruit extends Physics.Arcade.Sprite {
+export class Fruit extends Physics.Arcade.Sprite {
     energy: number;
     xOffset: number = 800;
     yOffset: number;

@@ -1,5 +1,5 @@
 import 'phaser';
-import BackgroundScene from './scenes/background';
+import BackgroundScene from "./scenes/background"
 import BootScene from './scenes/boot';
 import GameScene from './scenes/game';
 import PlaygroundScene from './scenes/playground';
