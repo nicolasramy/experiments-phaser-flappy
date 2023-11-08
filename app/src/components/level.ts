@@ -1,18 +1,21 @@
 import 'phaser';
 import {Scene} from "phaser";
 
-class Level {
-
+abstract class Level {
+    hello: number;
 }
 
 export class GrassLevel extends Level {
 
-    private energy: integer = 15;
+    private bronzeDistance: number = 1500;
+    private silverDistance: number = 2500;
+    private goldDistance: number = 5000;
     constructor() {
         super();
     }
 }
 export class ForestLevel extends Level {
+    hello: number = 20;
 
     private energy: integer = 25;
     constructor() {

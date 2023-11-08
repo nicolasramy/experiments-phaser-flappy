@@ -15,23 +15,22 @@ export default class ScoreScene extends Scene {
   }
 
   create(): void {
-    const info = this.add.text(10, 10, 'Score: 0').setColor('#000000');
+    const score = this.add.text(10, 10, 'Score: 0').setColor('#000000');
+    const ourGame = this.scene.get('PlaygroundScene');
 
-        //  Grab a reference to the Game Scene
-        const ourGame = this.scene.get('PlaygroundScene');
+    ourGame.events.on('addScore', function (){
+        this.score += 10;
+        score.setText(`Score: ${this.score}`);
+    }, this);
 
-        //  Listen for events from it
-        ourGame.events.on('addScore', function ()
-        {
-
-            this.score += 10;
-
-            info.setText(`Score: ${this.score}`);
-
-        }, this);
+    const info = this.add.text(1000, 16, 'Information:', {
+        fontSize: '18px',
+        padding: { x: 10, y: 5},
+        backgroundColor: '#000000'
+    });
   }
 
-  updae(): void {
+  update(): void {
     //
   }
 }

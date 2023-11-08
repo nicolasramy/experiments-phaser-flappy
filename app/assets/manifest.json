@@ -31,9 +31,17 @@
         "file": "background/backgroundColorDesert.png",
         "size": 18073
       },
+      "items/apple": {
+        "file": "items/apple.png",
+        "size": 324
+      },
+      "items/bananas": {
+        "file": "items/bananas.png",
+        "size": 285
+      },
       "items/cherries": {
         "file": "items/cherries.png",
-        "size": 18073
+        "size": 277
       }
     },
     "spritesheet": {
