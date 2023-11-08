@@ -30,6 +30,7 @@ export default class Background extends Scene {
   }
 
   update(time, delta): void {
+    // Phaser.Actions.IncX(this.backgroundImages, -1);
     Phaser.Actions.IncX(this.backgroundImages, -1);
 
     if (this.backgroundImages[1].x == 768) {

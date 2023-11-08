@@ -9,7 +9,7 @@ import ScoreScene from './scenes/score';
 const config: Phaser.Types.Core.GameConfig = {
     title: 'Experiments Phaser Flappy',
     type: Phaser.AUTO,
-    backgroundColor: '#333',
+    backgroundColor: '#222',
     pixelArt: true,
 
     physics: {

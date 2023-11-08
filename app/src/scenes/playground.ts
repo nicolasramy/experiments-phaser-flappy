@@ -147,10 +147,12 @@ export default class PlaygroundScene extends Scene {
         // if ()
         // Phaser.Actions.IncY(obstaclesTopOffset);
 
-        this.counter += 1;
+        // this.counter += 1;
+        /*
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
         }
+        */
 
         if (this.input.keyboard.checkDown(this.cursors.left, 100)) {
             this.player.setVelocityX(-this.cursorOffsetX / 2);
