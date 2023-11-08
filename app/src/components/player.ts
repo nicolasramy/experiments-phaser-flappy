@@ -3,7 +3,7 @@ import {Scene} from "phaser";
 import { Sprite } from 'phaser/src/physics/arcade/components';
 
 
-export default class Player {
+export class Player {
 
     readonly frameNumbersFly: Array<integer> = [5, 6, 7, 6];
     readonly frameNumbersWin: Array<integer> = [2, 1, 3, 2, 3, 2, 3];

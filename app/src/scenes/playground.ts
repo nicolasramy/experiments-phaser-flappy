@@ -1,10 +1,11 @@
 import { Scene } from 'phaser';
 // import { Apple, Banana, Cherry } from "../components/fruit";
 import { Banana } from "../components/fruit";
+import { Player } from "../components/player2";
 
 export default class PlaygroundScene extends Scene {
 
-    player: Phaser.Physics.Arcade.Sprite;
+    player: Player;
     // cursors: PhaserPla.CursorKeys;
     cursors;
 
@@ -14,10 +15,12 @@ export default class PlaygroundScene extends Scene {
     cursorOffsetY: number = 8;
 
     keyQ;
+    keyW;
     keyR;
     keyS;
     keyT;
     keyD;
+    keyF;
 
     fruit;
 
@@ -31,10 +34,18 @@ export default class PlaygroundScene extends Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+
+        this.player = new Player(this, 320, 360)
+        this.player.fly();
+        this.player.setCollideWorldBounds(true);
+
 
         this.fruit = new Banana(this, 600, 600, "items/bananas");
         // this.add.s
@@ -44,6 +55,18 @@ export default class PlaygroundScene extends Scene {
 
         if (this.keyR.isDown) {
             this.scene.restart();
+        }
+
+        if (this.keyW.isDown) {
+            this.player.win();
+        }
+
+        if (this.keyD.isDown) {
+            this.player.die();
+        }
+
+        if (this.keyF.isDown) {
+            this.player.fly();
         }
 
         //  Vertical movement every 100ms
