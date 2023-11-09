@@ -27,7 +27,7 @@ export default class BackgroundScene extends Scene {
     if (this.images.length) {
       Phaser.Actions.IncX(this.images, -this.speed);
 
-      if (this.images[1].x == 768) {
+      if (this.images[1].x == 768 && this.images.length == 2) {
         this.images.push(this.add.image(1792, 512, this.imageKey));
       }
 

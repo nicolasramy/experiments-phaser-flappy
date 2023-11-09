@@ -35,5 +35,6 @@ export default class ScoreScene extends Scene {
         ourGame.events.on('updateEnergy', function (value = 10){
             info.setText(`Energy: ${value}`);
         }, this);
+
     }
 }

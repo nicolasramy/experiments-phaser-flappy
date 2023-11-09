@@ -3,6 +3,7 @@ import { Scene } from 'phaser';
 import { Apple, Banana, Cherry } from "../components/fruit";
 import { Player } from "../components/player";
 import {DesertLevel, FallLevel, ForestLevel, GrassLevel, Level} from "../components/level";
+import Between = Phaser.Math.Between;
 
 export default class PlaygroundScene extends Scene {
 
@@ -12,12 +13,6 @@ export default class PlaygroundScene extends Scene {
     cursors;
 
     level;
-    levels = {
-        'grass': GrassLevel,
-        'forest': ForestLevel,
-        'fall': FallLevel,
-        'desert': DesertLevel
-    };
 
     score: number = 0;
     counter: number = 0;
@@ -32,7 +27,7 @@ export default class PlaygroundScene extends Scene {
     keyF;
 
     fruit;
-    fruits;
+    fruits = [];
 
     obstacles;
 
@@ -66,15 +61,74 @@ export default class PlaygroundScene extends Scene {
         // Add player and props
         this.player = new Player(this, 320, 360)
 
-        this.player.setDataEnabled();
-        this.player.data.set('level', 2);
-        this.player.data.set('gold', 150);
-        this.player.data.set('owner', 'Link');
-
         this.fruit = new Cherry(this, 600, 600);
+        this.fruits.push(this.fruit);
+
+        this.physics.add.collider(this.player, this.fruits, this.collectFruit, null, this);
+    }
+
+    compressFruits(): void {
+        this.fruits = this.fruits.filter(function (el) {
+          return el != null;
+        });
+    }
+
+    addFruit(): void {
+        let fruit;
+        switch (Between(1, 3)) {
+            case 1:
+                fruit = new Apple(this, 0, 0);
+                break;
+
+            case 2:
+                fruit = new Banana(this, 0, 0);
+                break;
+
+            case 3:
+                fruit = new Cherry(this, 0, 0);
+                break;
+        }
+
+        this.fruits.push(fruit);
+        this.physics.add.collider(this.player, this.fruits, this.collectFruit, null, this);
+
+        this.compressFruits();
+    }
+
+    collectFruit(player, fruit) {
+        fruit.disableBody(true, true);
+        this.events.emit('addScore', fruit.energy);
+
+        this.player.energy += fruit.energy;
+        this.player.energy = this.player.energy < 100 ? this.player.energy : 100;
+
+
+        let found = this.fruits.findIndex((el) => el == fruit);
+        fruit.destroy();
+        this.fruits[found] = null;
+
+        this.compressFruits();
+    }
+
+    updateFruits(time, delta): void {
+        for (let i = 0; i < this.fruits.length; i++) {
+            let currentFruit = this.fruits[i];
+
+            currentFruit.update(time, delta);
+
+            if (currentFruit.x < 0) {
+                currentFruit.destroy();
+                this.fruits[i] = null;
+            }
+        }
+
+        this.compressFruits();
     }
 
     update(time, delta): void {
+
+        this.player.update(time, delta, this.input.keyboard, this.cursors);
+
         // Handle extra keys
         if (this.keyR.isDown) {
             this.events.emit('resetScore');
@@ -107,49 +161,39 @@ export default class PlaygroundScene extends Scene {
              **/
         }
 
-        // Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));
-        // Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.2 * delta));
-
-        // if ()
-        // Phaser.Actions.IncY(obstaclesTopOffset);
+        this.events.emit('updateEnergy', this.player.energy);
 
         this.counter += 1;
+
+        let fruitDistance = this.registry.get('fruitDistance');
+        let fruitRatio = this.registry.get('fruitRatio');
+
+        this.updateFruits(time, delta);
+
+
+
+        let bronzeDistance = this.registry.get('bronzeDistance');
+
 
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
         }
 
-        if (this.counter  > 300) {
+        if (this.counter  > bronzeDistance) {
             this.events.emit('changeLevel',3, this.counter);
             this.counter = 0;
         }
 
-        this.player.update(time, delta, this.input.keyboard, this.cursors);
-        this.fruit.update(time, delta);
+        if (this.fruits.length < fruitRatio && this.counter % fruitDistance == 0) {
+            this.addFruit();
+        }
 
 
-        this.events.emit('updateEnergy', this.player.energy);
+        // Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));
+        // Phaser.Actions.IncX(this.obstaclesBottom, -Math.trunc(0.2 * delta));
 
-        // console.log(this.fruit.yOffset);
-        // console.log(this.fruit.isDeletable());
-        // this.fruit.update(time, delta);
-        // this.fruit.move();
-
-        /*
-        if (this.fruit.x < 0) {
-            this.fruit = new Banana(this, 200, 25);
-        } else {
-            this.fruit.move();
-        }*/
-        // console.log(this.fruit.sprite.body.x);
-
-
-
-        // console.log(this.level.bronzeDistance);
-
-
-        //this.level.play()
-
+        // if ()
+        // Phaser.Actions.IncY(obstaclesTopOffset);
 
     }
 }

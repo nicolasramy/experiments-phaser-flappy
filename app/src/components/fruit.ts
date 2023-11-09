@@ -19,7 +19,13 @@ export class Fruit extends Physics.Arcade.Sprite {
 
         this.postFX.addShine(this.shineSpeed);
 
+
         scene.add.existing(this);
+        scene.physics.add.existing(this);
+
+        // this.setImmovable(true);
+        this.setGravityY(0);
+
     }
 
     update(time, delta) {
