@@ -17,6 +17,7 @@ export class Player extends Physics.Arcade.Sprite {
     cursorOffsetY: number = 8;
 
     energy: number = 100;
+    alive: boolean = true;
 
     constructor (scene: Scene, x: number, y: number, frame?: string | number) {
         super(scene, x, y, 'player/bat', frame);
@@ -64,14 +65,21 @@ export class Player extends Physics.Arcade.Sprite {
 
     fly() {
         this.play('fly');
+        this.alive = true;
+        this.setBounce(0);
     }
 
     win() {
         this.play('win');
+        this.alive = true;
     }
 
     die() {
-        this.play('die');
+        if (this.alive) {
+            this.play('die');
+            this.setBounce(0.7);
+            this.alive = false;
+        }
     }
 
     update(time, delta, keyboard, cursors): void {
@@ -79,22 +87,22 @@ export class Player extends Physics.Arcade.Sprite {
         //  Handle movements (every 100ms)
         if (keyboard.checkDown(cursors.up, 100)) {
             this.setVelocityY(-this.cursorOffsetY * delta);
-            this.energy -= 1 / delta;
+            this.energy -= 10 / delta;
         }
 
         if (keyboard.checkDown(cursors.down, 100)) {
             this.setVelocityY(this.cursorOffsetY * delta);
-            this.energy -= 1 / delta;
+            this.energy -= 10 / delta;
         }
 
         if (keyboard.checkDown(cursors.left, 100)) {
             this.setVelocityX(-this.cursorOffsetX * delta);
-            this.energy -= 2 / delta;
+            this.energy -= 20 / delta;
         }
 
         if (keyboard.checkDown(cursors.right, 100)) {
             this.setVelocityX(this.cursorOffsetX * delta);
-            this.energy -= 2 / delta;
+            this.energy -= 20 / delta;
         }
 
         this.energy -= 1 / delta;  // 1 / delta ~ 35s

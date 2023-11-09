@@ -1,15 +1,13 @@
 import { Scene } from 'phaser';
-// import { Apple, Banana, Cherry } from "../components/fruit";
 import { Apple, Banana, Cherry } from "../components/fruit";
 import { Player } from "../components/player";
-import {DesertLevel, FallLevel, ForestLevel, GrassLevel, Level} from "../components/level";
 import Between = Phaser.Math.Between;
 
 export default class PlaygroundScene extends Scene {
 
     player: Player;
+    fruits = [];
 
-    // cursors: PhaserPla.CursorKeys;
     cursors;
 
     level;
@@ -25,9 +23,6 @@ export default class PlaygroundScene extends Scene {
     keyT;
     keyD;
     keyF;
-
-    fruit;
-    fruits = [];
 
     obstacles;
 
@@ -59,11 +54,7 @@ export default class PlaygroundScene extends Scene {
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         // Add player and props
-        this.player = new Player(this, 320, 360)
-
-        this.fruit = new Cherry(this, 600, 600);
-        this.fruits.push(this.fruit);
-
+        this.player = new Player(this, 320, 360);
         this.physics.add.collider(this.player, this.fruits, this.collectFruit, null, this);
     }
 
@@ -149,19 +140,8 @@ export default class PlaygroundScene extends Scene {
 
 
         if (this.input.keyboard.checkDown(this.cursors.space, 100)) {
-
-            /**
-            this.obstacleFrame = this.obstacleFrame + 1;
-
-            this.obstaclesTop.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
-            Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
-
-            this.obstaclesBottom.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
-            Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
-             **/
         }
 
-        this.events.emit('updateEnergy', this.player.energy);
 
         this.counter += 1;
 
@@ -177,6 +157,7 @@ export default class PlaygroundScene extends Scene {
 
         if (this.counter % this.counterStep == 0) {
             this.events.emit('addScore');
+            this.events.emit('updateEnergy', this.player.energy);
         }
 
         if (this.counter  > bronzeDistance) {
@@ -187,6 +168,17 @@ export default class PlaygroundScene extends Scene {
         if (this.fruits.length < fruitRatio && this.counter % fruitDistance == 0) {
             this.addFruit();
         }
+
+
+        /**
+        this.obstacleFrame = this.obstacleFrame + 1;
+
+        this.obstaclesTop.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
+        Phaser.Actions.AlignTo(this.obstaclesTop, Phaser.Display.Align.RIGHT_TOP);
+
+        this.obstaclesBottom.push(this.add.sprite(0, 0, `obstacles`, this.obstaclesFrames[this.obstacleFrame]));
+        Phaser.Actions.AlignTo(this.obstaclesBottom, Phaser.Display.Align.RIGHT_BOTTOM);
+         **/
 
 
         // Phaser.Actions.IncX(this.obstaclesTop, -Math.trunc(0.2 * delta));

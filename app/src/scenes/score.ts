@@ -32,7 +32,8 @@ export default class ScoreScene extends Scene {
             score.setText(`Score: ${this.score}`);
         }, this);
 
-        ourGame.events.on('updateEnergy', function (value = 10){
+        ourGame.events.on('updateEnergy', function (value = 100){
+            value = Math.trunc(value);
             info.setText(`Energy: ${value}`);
         }, this);
 
